@@ -3,16 +3,26 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import VeeValidatePlugin from "./includes/validation";
+import { auth } from "./includes/firebase";
 import "./assets/tailwind.css";
 import "./assets/main.css";
 
-// init app
-const app = createApp(App);
+let app;
 
-// registering plugins
-app.use(store);
-app.use(router);
-app.use(VeeValidatePlugin);
+// check if user is logged in or out
+auth.onAuthStateChanged(() => {
+  // only init app if not initialized
+  if (!app) {
+    console.log("yoyuo");
+    // init app
+    app = createApp(App);
 
-// mounting the app
-app.mount("#app");
+    // registering plugins
+    app.use(store);
+    app.use(router);
+    app.use(VeeValidatePlugin);
+
+    // mounting the app
+    app.mount("#app");
+  }
+});

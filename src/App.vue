@@ -483,5 +483,8 @@ import AuthModal from "./components/Auth";
 export default {
   name: "App",
   components: { AppHeader, AuthModal },
+  created() {
+    this.$store.dispatch("init_login");
+  },
 };
 </script>

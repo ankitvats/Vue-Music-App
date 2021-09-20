@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "@/views/Home.vue"; // @ - ROOT DIRECTORY
+import About from "@/views/About.vue";
+import Manage from "@/views/Manage.vue";
+import store from "@/store";
 
 const routes = [
   {
@@ -10,17 +13,58 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    component: About,
+  },
+  {
+    path: "/manage-music",
+    // alias: "/manage",
+    name: "Manage",
+    meta: {
+      requiresAuth: true,
+    },
+    component: Manage,
+    beforeEnter: (to, from, next) => {
+      console.log("Route Guard");
+
+      next();
+    },
+  },
+  {
+    path: "/manage",
+    redirect: { name: "Manage" },
+  },
+  //   404 not found page
+  {
+    path: "/:catchAll(.*)*",
+    redirect: { name: "Home" },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+  linkExactActiveClass: "text-yellow-500",
+});
+
+router.beforeEach((to, from, next) => {
+  // console.log(to.matched); show all the matched routes
+
+  // if any matched routes doesn't contains requiresAuth, do nothing
+  if (!to.matched.some((record) => record.meta.requiresAuth)) {
+    next();
+    return;
+  }
+
+  // if the match contain the requiresAuth meta field
+  // allow the page to render if user is logged in
+  if (store.state.userLoggedIn) {
+    next();
+  } else {
+    // else redirect it to the home page
+    next({ name: "Home" });
+  }
+
+  next();
 });
 
 export default router;

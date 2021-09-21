@@ -11,9 +11,9 @@ let app;
 
 // check if user is logged in or out
 auth.onAuthStateChanged(() => {
+  console.log(auth.currentUser);
   // only init app if not initialized
   if (!app) {
-    console.log("yoyuo");
     // init app
     app = createApp(App);
 

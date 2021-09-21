@@ -63,8 +63,6 @@ router.beforeEach((to, from, next) => {
     // else redirect it to the home page
     next({ name: "Home" });
   }
-
-  next();
 });
 
 export default router;

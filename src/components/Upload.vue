@@ -110,7 +110,7 @@ export default {
             console.log(error);
           },
           async () => {
-            console.log(auth);
+            // console.log(auth);
             // success
             const song = {
               uid: auth.currentUser.uid,
@@ -131,11 +131,16 @@ export default {
         );
       });
     },
+    cancelUploads() {
+      this.uploads.forEach((upload) => {
+        upload.task.cancel();
+      });
+    },
   },
-  beforeUnmount() {
-    this.uploads.forEach((upload) => {
-      upload.task.cancel();
-    });
-  },
+  //   beforeUnmount() {
+  //     this.uploads.forEach((upload) => {
+  //       upload.task.cancel();
+  //     });
+  //   },
 };
 </script>

@@ -81,6 +81,20 @@ export default {
         if (file.type !== "audio/mpeg") {
           return;
         }
+
+        // check if a user is online/offline
+        if (!navigator.onLine) {
+          this.uploads.push({
+            task: {},
+            current_progress: 100,
+            name: file.name,
+            variant: "bg-red-400",
+            icon: "fas fa-times",
+            text_class: "text-red-400",
+          });
+          return;
+        }
+
         // creating root location
         const storageRef = storage.ref(); // music-app-70dc3.appspot.com
         const songsRef = storageRef.child(`songs/${file.name}`); // music-app-70dc3.appspot.com/songs/filename.mp3

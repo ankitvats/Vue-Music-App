@@ -1,10 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/Home.vue"; // @ - ROOT DIRECTORY
-import About from "@/views/About.vue";
-import Manage from "@/views/Manage.vue";
-import Song from "@/views/Song.vue";
+// import Home from "@/views/Home.vue"; // @ - ROOT DIRECTORY
+// import About from "@/views/About.vue";
+// import Manage from "@/views/Manage.vue";
+// import Song from "@/views/Song.vue";
 import store from "@/store";
+
+const Home = () => import("@/views/Home.vue")
+const About = () => import("@/views/About.vue")
+const Manage = () => import(/* webpackChunkName: "groupedChunk" */"@/views/Manage.vue")
+const Song = () => import(/* webpackChunkName: "groupedChunk" */"@/views/Song.vue")
 
 const routes = [
 	{
@@ -64,7 +69,7 @@ router.beforeEach((to, from, next) => {
 
 	// if the match contain the requiresAuth meta field
 	// allow the page to render if user is logged in
-	if (store.state.userLoggedIn) {
+	if (store.state.auth.userLoggedIn) {
 		next();
 	} else {
 		// else redirect it to the home page

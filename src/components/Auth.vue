@@ -113,7 +113,9 @@ export default {
     // },
     // ...mapGetters(["authModalShow"]),
     // This will create a simple getter function for us
-    ...mapState(["authModalShow"]),
+    ...mapState({
+      authModalShow: (state) => state.auth.authModalShow,
+    }),
     // Creating alias
     // ...mapState({
     //   modal: "authModalShow",
